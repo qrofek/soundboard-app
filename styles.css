@@ -109,14 +109,14 @@ body {
     50% { background-position: 100% 50%; }
 }
 
-/* Sound Grid - 15 buttons in 5x3 layout */
+/* Sound Grid - 15 buttons in 3x5 layout (portrait) */
 .sound-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 15px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 12px;
     flex: 1;
-    max-width: 900px;
+    max-width: 450px;
     width: 100%;
     margin: 0 auto;
     padding: 10px 0;
@@ -272,28 +272,31 @@ body {
 }
 
 /* Responsive Design */
+
+/* Desktop and Tablets */
 @media (max-width: 1024px) {
     .sound-grid {
-        max-width: 700px;
+        max-width: 420px;
         gap: 12px;
     }
     
     .sound-button {
-        font-size: 0.9rem;
-        min-height: 70px;
+        font-size: 0.95rem;
+        min-height: 80px;
     }
 }
 
+/* Large phones and small tablets */
 @media (max-width: 768px) {
     .sound-grid {
-        max-width: 600px;
+        max-width: 400px;
         gap: 10px;
     }
     
     .sound-button {
-        font-size: 0.85rem;
-        min-height: 65px;
-        border-radius: 15px;
+        font-size: 0.9rem;
+        min-height: 75px;
+        border-radius: 16px;
     }
     
     .app-title {
@@ -301,27 +304,28 @@ body {
     }
 }
 
-@media (max-width: 480px) {
+/* iPhone 16 Pro and similar (393px viewport width) */
+@media (max-width: 430px) {
     .content {
-        padding: 15px 10px;
+        padding: 12px 15px;
     }
     
     .sound-grid {
-        gap: 8px;
+        gap: 10px;
         max-width: 100%;
-        padding: 5px 0;
+        padding: 8px 0;
     }
     
     .sound-button {
-        font-size: 0.7rem;
-        min-height: 55px;
-        border-radius: 12px;
-        padding: 5px;
+        font-size: 0.85rem;
+        min-height: 70px;
+        border-radius: 14px;
+        padding: 8px;
     }
     
     .app-title {
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
+        font-size: 1.6rem;
+        margin-bottom: 0.6rem;
     }
     
     .page-indicator {
@@ -329,7 +333,31 @@ body {
     }
     
     .navigation {
-        padding: 15px;
+        padding: 12px;
+    }
+}
+
+/* iPhone 16 Pro / 15 Pro / 14 Pro (393x852) - Optimized */
+@media (max-width: 393px) {
+    .content {
+        padding: 10px 12px;
+    }
+    
+    .sound-grid {
+        gap: 8px;
+        padding: 5px 0;
+    }
+    
+    .sound-button {
+        font-size: 0.8rem;
+        min-height: 65px;
+        border-radius: 12px;
+        padding: 6px;
+    }
+    
+    .app-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
     }
     
     .slider-track {
@@ -347,10 +375,28 @@ body {
     }
 }
 
-@media (max-width: 380px) {
+/* Smaller iPhones (SE, Mini) */
+@media (max-width: 375px) {
+    .sound-grid {
+        gap: 7px;
+    }
+    
     .sound-button {
-        font-size: 0.6rem;
-        min-height: 48px;
+        font-size: 0.75rem;
+        min-height: 60px;
+    }
+    
+    .app-title {
+        font-size: 1.4rem;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 360px) {
+    .sound-button {
+        font-size: 0.7rem;
+        min-height: 55px;
+        padding: 4px;
     }
 }
 

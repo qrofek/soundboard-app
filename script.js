@@ -6,6 +6,13 @@ class SoundboardApp {
         this.audioElements = new Map();
         this.playingSounds = new Set();
         
+        // Swipe detection variables
+        this.touchStartX = 0;
+        this.touchEndX = 0;
+        this.touchStartY = 0;
+        this.touchEndY = 0;
+        this.minSwipeDistance = 50; // Minimum distance for a swipe
+        
         this.init();
     }
 
@@ -23,8 +30,8 @@ class SoundboardApp {
         buttons.forEach((button, index) => {
             console.log(`Setting up button ${index + 1}:`, button.getAttribute('data-sound'));
             button.addEventListener('click', (e) => this.playSound(e));
-            button.addEventListener('touchstart', (e) => this.handleTouchStart(e));
-            button.addEventListener('touchend', (e) => this.handleTouchEnd(e));
+            button.addEventListener('touchstart', (e) => this.handleButtonTouchStart(e));
+            button.addEventListener('touchend', (e) => this.handleButtonTouchEnd(e));
         });
 
         // Navigation dots
@@ -48,7 +55,15 @@ class SoundboardApp {
             });
         });
 
-        // Prevent default touch behaviors
+        // Swipe gesture detection on the entire page
+        const pages = document.querySelectorAll('.page');
+        pages.forEach(page => {
+            page.addEventListener('touchstart', (e) => this.handleSwipeStart(e), { passive: true });
+            page.addEventListener('touchmove', (e) => this.handleSwipeMove(e), { passive: true });
+            page.addEventListener('touchend', (e) => this.handleSwipeEnd(e), { passive: true });
+        });
+
+        // Prevent default touch behaviors on buttons only
         document.addEventListener('touchstart', (e) => {
             if (e.target.classList.contains('sound-button')) {
                 e.preventDefault();
@@ -258,12 +273,74 @@ class SoundboardApp {
         });
     }
 
-    handleTouchStart(event) {
+    // Swipe gesture handlers
+    handleSwipeStart(event) {
+        // Don't handle swipe if touching a button
+        if (event.target.classList.contains('sound-button') || 
+            event.target.closest('.sound-button') ||
+            event.target.classList.contains('dot') ||
+            event.target.closest('.slider-track')) {
+            return;
+        }
+        
+        this.touchStartX = event.changedTouches[0].screenX;
+        this.touchStartY = event.changedTouches[0].screenY;
+    }
+
+    handleSwipeMove(event) {
+        // Track the current position
+        this.touchEndX = event.changedTouches[0].screenX;
+        this.touchEndY = event.changedTouches[0].screenY;
+    }
+
+    handleSwipeEnd(event) {
+        // Don't handle swipe if touching a button
+        if (event.target.classList.contains('sound-button') || 
+            event.target.closest('.sound-button') ||
+            event.target.classList.contains('dot') ||
+            event.target.closest('.slider-track')) {
+            return;
+        }
+        
+        this.handleSwipeGesture();
+    }
+
+    handleSwipeGesture() {
+        const diffX = this.touchStartX - this.touchEndX;
+        const diffY = this.touchStartY - this.touchEndY;
+        
+        // Check if horizontal swipe is more significant than vertical
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            // Check if swipe distance is significant enough
+            if (Math.abs(diffX) > this.minSwipeDistance) {
+                if (diffX > 0) {
+                    // Swiped left - go to next page
+                    if (this.currentPage === 1) {
+                        this.navigateToPage(2);
+                    }
+                } else {
+                    // Swiped right - go to previous page
+                    if (this.currentPage === 2) {
+                        this.navigateToPage(1);
+                    }
+                }
+            }
+        }
+        
+        // Reset touch positions
+        this.touchStartX = 0;
+        this.touchEndX = 0;
+        this.touchStartY = 0;
+        this.touchEndY = 0;
+    }
+
+    // Button touch handlers (for visual feedback)
+    handleButtonTouchStart(event) {
         const button = event.currentTarget;
         button.style.transform = 'translateY(2px) scale(0.95)';
     }
 
-    handleTouchEnd(event) {
+    handleButtonTouchEnd(event) {
         const button = event.currentTarget;
         button.style.transform = 'translateY(0) scale(1)';
     }
