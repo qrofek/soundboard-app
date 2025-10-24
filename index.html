@@ -13,11 +13,11 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- Main Soundboard Page -->
-        <div class="page active" id="soundboard-page">
+        <!-- Soundboard Page 1 -->
+        <div class="page active" id="soundboard-page-1">
             <div class="background-nebula"></div>
             <div class="content">
-                <h1 class="app-title">Space Soundboard</h1>
+                <h1 class="app-title">Space Soundboard <span class="page-indicator">1</span></h1>
                 <div class="sound-grid">
                     <button class="sound-button" data-sound="sound1" style="--button-color: #ff6b6b;">
                         <span class="button-text">Aaaaaaaah</span>
@@ -46,6 +46,105 @@
                     <button class="sound-button" data-sound="sound9" style="--button-color: #48dbfb;">
                         <span class="button-text">Rascal</span>
                     </button>
+                    <button class="sound-button" data-sound="sound10" style="--button-color: #ff6348;">
+                        <span class="button-text">Sir I Kruh</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound11" style="--button-color: #a29bfe;">
+                        <span class="button-text">Sirkruuuh</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound12" style="--button-color: #fd79a8;">
+                        <span class="button-text">Was Zu Essen</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound13" style="--button-color: #6c5ce7;">
+                        <span class="button-text">OProkleblo</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound14" style="--button-color: #00b894;">
+                        <span class="button-text">Freiheit</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound15" style="--button-color: #fdcb6e;">
+                        <span class="button-text">Ich Muss Raus</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Navigation Slider -->
+            <div class="navigation">
+                <div class="slider-container">
+                    <div class="slider-track" data-page="1">
+                        <div class="slider-thumb"></div>
+                    </div>
+                    <div class="page-dots">
+                        <span class="dot active" data-page="1"></span>
+                        <span class="dot" data-page="2"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Soundboard Page 2 -->
+        <div class="page" id="soundboard-page-2">
+            <div class="background-nebula"></div>
+            <div class="content">
+                <h1 class="app-title">Space Soundboard <span class="page-indicator">2</span></h1>
+                <div class="sound-grid">
+                    <button class="sound-button" data-sound="sound16" style="--button-color: #e17055;">
+                        <span class="button-text">Daaahdaah</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound17" style="--button-color: #0984e3;">
+                        <span class="button-text">Feeeelfeeeeel</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound18" style="--button-color: #d63031;">
+                        <span class="button-text">Ahahaaapig</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound19" style="--button-color: #74b9ff;">
+                        <span class="button-text">Ahahaaapig Slo</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound20" style="--button-color: #fab1a0;">
+                        <span class="button-text">Kai - Ich Kann Nicht</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound21" style="--button-color: #55efc4;">
+                        <span class="button-text">Sound 21</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound22" style="--button-color: #81ecec;">
+                        <span class="button-text">Sound 22</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound23" style="--button-color: #a29bfe;">
+                        <span class="button-text">Sound 23</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound24" style="--button-color: #ffeaa7;">
+                        <span class="button-text">Sound 24</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound25" style="--button-color: #dfe6e9;">
+                        <span class="button-text">Sound 25</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound26" style="--button-color: #ff7675;">
+                        <span class="button-text">Sound 26</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound27" style="--button-color: #fd79a8;">
+                        <span class="button-text">Sound 27</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound28" style="--button-color: #636e72;">
+                        <span class="button-text">Sound 28</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound29" style="--button-color: #00cec9;">
+                        <span class="button-text">Sound 29</span>
+                    </button>
+                    <button class="sound-button" data-sound="sound30" style="--button-color: #b2bec3;">
+                        <span class="button-text">Sound 30</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Navigation Slider -->
+            <div class="navigation">
+                <div class="slider-container">
+                    <div class="slider-track" data-page="2">
+                        <div class="slider-thumb"></div>
+                    </div>
+                    <div class="page-dots">
+                        <span class="dot" data-page="1"></span>
+                        <span class="dot active" data-page="2"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -53,40 +152,68 @@
 
     <!-- Audio Elements -->
     <div class="audio-container">
+        <!-- Page 1 Sounds -->
         <audio id="sound1" preload="auto">
             <source src="sounds/aaaaaaaaaaaaaaaah.mp3" type="audio/mpeg">
         </audio>
         <audio id="sound2" preload="auto">
             <source src="sounds/proklejto.ogg" type="audio/ogg">
-            <source src="sounds/proklejto.ogg" type="audio/opus">
         </audio>
         <audio id="sound3" preload="auto">
             <source src="sounds/tale lukna.ogg" type="audio/ogg">
-            <source src="sounds/tale lukna.ogg" type="audio/opus">
         </audio>
         <audio id="sound4" preload="auto">
             <source src="sounds/yihaaaa.ogg" type="audio/ogg">
-            <source src="sounds/yihaaaa.ogg" type="audio/opus">
         </audio>
         <audio id="sound5" preload="auto">
             <source src="sounds/da te kuga.ogg" type="audio/ogg">
-            <source src="sounds/da te kuga.ogg" type="audio/opus">
         </audio>
         <audio id="sound6" preload="auto">
             <source src="sounds/game over.ogg" type="audio/ogg">
-            <source src="sounds/game over.ogg" type="audio/opus">
         </audio>
         <audio id="sound7" preload="auto">
             <source src="sounds/jaah jahh.ogg" type="audio/ogg">
-            <source src="sounds/jaah jahh.ogg" type="audio/opus">
         </audio>
         <audio id="sound8" preload="auto">
             <source src="sounds/nocem bit sam.ogg" type="audio/ogg">
-            <source src="sounds/nocem bit sam.ogg" type="audio/opus">
         </audio>
         <audio id="sound9" preload="auto">
             <source src="sounds/rascal.ogg" type="audio/ogg">
-            <source src="sounds/rascal.ogg" type="audio/opus">
+        </audio>
+        <audio id="sound10" preload="auto">
+            <source src="sounds/sir i kruh.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sound11" preload="auto">
+            <source src="sounds/sirkruuuh.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sound12" preload="auto">
+            <source src="sounds/WasZuEssen.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sound13" preload="auto">
+            <source src="sounds/OProkleblo.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sound14" preload="auto">
+            <source src="sounds/freiheit.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sound15" preload="auto">
+            <source src="sounds/ichmussraus.mp3" type="audio/mpeg">
+        </audio>
+        
+        <!-- Page 2 Sounds -->
+        <audio id="sound16" preload="auto">
+            <source src="sounds/Daaahdaah.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sound17" preload="auto">
+            <source src="sounds/feeeelfeeeeel.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sound18" preload="auto">
+            <source src="sounds/ahahaaapig.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sound19" preload="auto">
+            <source src="sounds/ahahaaapig-slo.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="sound20" preload="auto">
+            <source src="sounds/KAI - ich kann nicht mehr.. aber ich muss....mp3" type="audio/mpeg">
         </audio>
     </div>
 

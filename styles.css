@@ -58,11 +58,13 @@ body {
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
+    pointer-events: none;
 }
 
 .page.active {
     opacity: 1;
     transform: translateX(0);
+    pointer-events: auto;
 }
 
 .page.prev {
@@ -74,24 +76,32 @@ body {
     position: relative;
     z-index: 10;
     padding: 20px;
-    height: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    overflow: hidden;
 }
 
 /* App Title */
 .app-title {
     text-align: center;
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
     background-size: 400% 400%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: gradientShift 3s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+.page-indicator {
+    display: inline-block;
+    font-size: 1.2rem;
+    opacity: 0.6;
+    margin-left: 0.5rem;
 }
 
 @keyframes gradientShift {
@@ -99,36 +109,40 @@ body {
     50% { background-position: 100% 50%; }
 }
 
-/* Sound Grid */
+/* Sound Grid - 15 buttons in 5x3 layout */
 .sound-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 15px;
     flex: 1;
-    max-width: 500px;
+    max-width: 900px;
+    width: 100%;
     margin: 0 auto;
-    padding: 40px 0;
-    align-content: center;
+    padding: 10px 0;
 }
 
 /* Sound Buttons */
 .sound-button {
-    aspect-ratio: 1;
     border: none;
-    border-radius: 25px;
+    border-radius: 20px;
     background: var(--button-color, #4ecdc4);
     color: white;
-    font-size: 1.4rem;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     position: relative;
     overflow: hidden;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 
-        0 12px 40px rgba(0, 0, 0, 0.3),
+        0 8px 32px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
     transform: translateY(0);
-    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    min-height: 80px;
 }
 
 .sound-button::before {
@@ -172,8 +186,82 @@ body {
     position: relative;
     z-index: 2;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    line-height: 1.2;
+    word-break: break-word;
 }
 
+/* Navigation */
+.navigation {
+    position: relative;
+    z-index: 20;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.slider-track {
+    width: 200px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    position: relative;
+    cursor: pointer;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.slider-thumb {
+    position: absolute;
+    width: 90px;
+    height: 42px;
+    background: linear-gradient(135deg, #8a2be2, #ff1493);
+    border-radius: 21px;
+    top: 4px;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 16px rgba(138, 43, 226, 0.5);
+}
+
+.slider-track[data-page="1"] .slider-thumb {
+    left: 4px;
+}
+
+.slider-track[data-page="2"] .slider-thumb {
+    left: calc(100% - 94px);
+}
+
+.page-dots {
+    display: flex;
+    gap: 12px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background: linear-gradient(135deg, #8a2be2, #ff1493);
+    box-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
+    transform: scale(1.2);
+}
+
+.dot:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
 
 /* Audio Container */
 .audio-container {
@@ -184,21 +272,85 @@ body {
 }
 
 /* Responsive Design */
-@media (max-width: 480px) {
+@media (max-width: 1024px) {
     .sound-grid {
+        max-width: 700px;
         gap: 12px;
-        max-width: 340px;
-        padding: 20px 0;
     }
     
     .sound-button {
-        font-size: 1rem;
-        min-height: 90px;
+        font-size: 0.9rem;
+        min-height: 70px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sound-grid {
+        max-width: 600px;
+        gap: 10px;
+    }
+    
+    .sound-button {
+        font-size: 0.85rem;
+        min-height: 65px;
+        border-radius: 15px;
     }
     
     .app-title {
         font-size: 1.8rem;
-        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .content {
+        padding: 15px 10px;
+    }
+    
+    .sound-grid {
+        gap: 8px;
+        max-width: 100%;
+        padding: 5px 0;
+    }
+    
+    .sound-button {
+        font-size: 0.7rem;
+        min-height: 55px;
+        border-radius: 12px;
+        padding: 5px;
+    }
+    
+    .app-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .page-indicator {
+        font-size: 1rem;
+    }
+    
+    .navigation {
+        padding: 15px;
+    }
+    
+    .slider-track {
+        width: 160px;
+        height: 44px;
+    }
+    
+    .slider-thumb {
+        width: 75px;
+        height: 36px;
+    }
+    
+    .slider-track[data-page="2"] .slider-thumb {
+        left: calc(100% - 79px);
+    }
+}
+
+@media (max-width: 380px) {
+    .sound-button {
+        font-size: 0.6rem;
+        min-height: 48px;
     }
 }
 

@@ -2,6 +2,7 @@
 
 class SoundboardApp {
     constructor() {
+        this.currentPage = 1;
         this.audioElements = new Map();
         this.playingSounds = new Set();
         
@@ -26,6 +27,27 @@ class SoundboardApp {
             button.addEventListener('touchend', (e) => this.handleTouchEnd(e));
         });
 
+        // Navigation dots
+        const dots = document.querySelectorAll('.dot');
+        dots.forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                const page = parseInt(e.target.getAttribute('data-page'));
+                this.navigateToPage(page);
+            });
+        });
+
+        // Slider track clicks
+        const sliderTracks = document.querySelectorAll('.slider-track');
+        sliderTracks.forEach(track => {
+            track.addEventListener('click', (e) => {
+                const rect = track.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const width = rect.width;
+                const page = clickX < width / 2 ? 1 : 2;
+                this.navigateToPage(page);
+            });
+        });
+
         // Prevent default touch behaviors
         document.addEventListener('touchstart', (e) => {
             if (e.target.classList.contains('sound-button')) {
@@ -35,12 +57,10 @@ class SoundboardApp {
     }
 
     initializeAudioElements() {
-        // Initialize audio elements for all 9 sounds
-        for (let i = 1; i <= 9; i++) {
+        // Initialize audio elements for all 30 sounds
+        for (let i = 1; i <= 30; i++) {
             const audioId = `sound${i}`;
             const audioElement = document.getElementById(audioId);
-            
-            console.log(`Looking for audio element: ${audioId}`, audioElement);
             
             if (audioElement) {
                 this.audioElements.set(audioId, audioElement);
@@ -50,15 +70,6 @@ class SoundboardApp {
                 audioElement.addEventListener('play', () => this.onSoundStart(audioId));
                 audioElement.addEventListener('ended', () => this.onSoundEnd(audioId));
                 audioElement.addEventListener('error', (e) => this.onSoundError(audioId, e));
-                audioElement.addEventListener('canplaythrough', () => {
-                    console.log(`Audio ${audioId} is ready to play`);
-                });
-                audioElement.addEventListener('loadstart', () => {
-                    console.log(`Started loading audio ${audioId}`);
-                });
-                audioElement.addEventListener('loadeddata', () => {
-                    console.log(`Audio ${audioId} data loaded`);
-                });
                 
                 // Set audio properties for better compatibility
                 audioElement.preload = 'auto';
@@ -70,14 +81,58 @@ class SoundboardApp {
                 } catch (error) {
                     console.error(`Error loading audio ${audioId}:`, error);
                 }
-            } else {
-                console.error(`Audio element ${audioId} not found!`);
             }
         }
         
         console.log(`Total audio elements stored: ${this.audioElements.size}`);
     }
 
+    navigateToPage(pageNumber) {
+        if (pageNumber === this.currentPage) return;
+        
+        console.log(`Navigating from page ${this.currentPage} to page ${pageNumber}`);
+        
+        // Stop all sounds when changing pages
+        this.stopAllSounds();
+        
+        // Get page elements
+        const currentPageElement = document.getElementById(`soundboard-page-${this.currentPage}`);
+        const newPageElement = document.getElementById(`soundboard-page-${pageNumber}`);
+        
+        // Update page classes
+        currentPageElement.classList.remove('active');
+        currentPageElement.classList.add('prev');
+        
+        newPageElement.classList.remove('prev');
+        newPageElement.classList.add('active');
+        
+        // Update dots
+        document.querySelectorAll('.dot').forEach(dot => {
+            const dotPage = parseInt(dot.getAttribute('data-page'));
+            if (dotPage === pageNumber) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+        
+        // Update slider thumbs
+        document.querySelectorAll('.slider-track').forEach(track => {
+            track.setAttribute('data-page', pageNumber);
+        });
+        
+        // Reset prev class after transition
+        setTimeout(() => {
+            if (!currentPageElement.classList.contains('active')) {
+                currentPageElement.classList.remove('prev');
+            }
+        }, 500);
+        
+        this.currentPage = pageNumber;
+        
+        // Haptic feedback
+        this.hapticFeedback();
+    }
 
     setupPWA() {
         // Register service worker for PWA functionality
@@ -132,7 +187,6 @@ class SoundboardApp {
         console.log(`Attempting to play sound: ${soundId}`);
         console.log(`Audio element src: ${audioElement.src}`);
         console.log(`Audio element readyState: ${audioElement.readyState}`);
-        console.log(`Audio element networkState: ${audioElement.networkState}`);
 
         // Stop any currently playing sound
         this.stopAllSounds();
@@ -150,12 +204,7 @@ class SoundboardApp {
                     console.log(`Sound ${soundId} started playing successfully`);
                 }).catch(error => {
                     console.error(`Error playing sound ${soundId}:`, error);
-                    console.error('Error details:', {
-                        name: error.name,
-                        message: error.message,
-                        code: error.code
-                    });
-                    this.showError(`Unable to play sound ${soundId}. Please check your audio settings.`);
+                    this.showError(`Unable to play sound ${soundId}`);
                     button.classList.remove('playing');
                 });
             }
@@ -191,7 +240,6 @@ class SoundboardApp {
         if (button) {
             button.classList.remove('playing');
         }
-        this.showError(`Error loading sound: ${soundId}`);
     }
 
     stopAllSounds() {
@@ -220,7 +268,6 @@ class SoundboardApp {
         button.style.transform = 'translateY(0) scale(1)';
     }
 
-
     hapticFeedback() {
         // Add haptic feedback if supported
         if ('vibrate' in navigator) {
@@ -231,33 +278,6 @@ class SoundboardApp {
     showError(message) {
         // Simple error notification
         console.error(message);
-        // You could implement a toast notification here
-    }
-
-    showSuccess(message) {
-        // Simple success notification
-        console.log(message);
-        // You could implement a toast notification here
-    }
-
-    // Test function for debugging
-    testAudio(soundId = 'sound1') {
-        console.log(`Testing audio: ${soundId}`);
-        const audioElement = document.getElementById(soundId);
-        if (audioElement) {
-            console.log('Audio element found:', audioElement);
-            console.log('Audio src:', audioElement.src);
-            console.log('Audio readyState:', audioElement.readyState);
-            
-            audioElement.currentTime = 0;
-            audioElement.play().then(() => {
-                console.log('Test audio played successfully');
-            }).catch(error => {
-                console.error('Test audio failed:', error);
-            });
-        } else {
-            console.error('Audio element not found');
-        }
     }
 }
 
@@ -266,27 +286,6 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing SoundboardApp...');
     window.soundboardApp = new SoundboardApp();
     console.log('SoundboardApp initialized:', window.soundboardApp);
-    
-    // Additional fallback initialization after a short delay
-    setTimeout(() => {
-        console.log('Fallback initialization...');
-        if (window.soundboardApp) {
-            // Re-initialize audio elements if needed
-            window.soundboardApp.initializeAudioElements();
-            
-            // Test if buttons are working
-            const buttons = document.querySelectorAll('.sound-button');
-            console.log(`Found ${buttons.length} buttons after fallback`);
-            
-            // Add a simple test click handler
-            buttons.forEach((button, index) => {
-                if (!button.hasAttribute('data-listener-added')) {
-                    button.setAttribute('data-listener-added', 'true');
-                    console.log(`Added fallback listener to button ${index + 1}`);
-                }
-            });
-        }
-    }, 1000);
 });
 
 // Handle page visibility changes
