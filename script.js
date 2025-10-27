@@ -183,6 +183,9 @@ class SoundboardApp {
             return;
         }
 
+        // Create ripple effect
+        this.createRipple(event, button);
+
         // Get audio element
         let audioElement = this.audioElements.get(soundId);
         if (!audioElement) {
@@ -236,6 +239,42 @@ class SoundboardApp {
         
         // Add haptic feedback
         this.hapticFeedback();
+    }
+
+    createRipple(event, button) {
+        // Create ripple element
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        
+        // Get button dimensions and position
+        const rect = button.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        
+        // Calculate position - use touch or click coordinates
+        let x, y;
+        if (event.touches && event.touches.length > 0) {
+            x = event.touches[0].clientX - rect.left;
+            y = event.touches[0].clientY - rect.top;
+        } else if (event.changedTouches && event.changedTouches.length > 0) {
+            x = event.changedTouches[0].clientX - rect.left;
+            y = event.changedTouches[0].clientY - rect.top;
+        } else {
+            x = event.clientX - rect.left;
+            y = event.clientY - rect.top;
+        }
+        
+        // Position and size the ripple
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = (x - size / 2) + 'px';
+        ripple.style.top = (y - size / 2) + 'px';
+        
+        // Add to button
+        button.appendChild(ripple);
+        
+        // Remove after animation
+        setTimeout(() => {
+            ripple.remove();
+        }, 800);
     }
 
     onSoundStart(soundId) {
