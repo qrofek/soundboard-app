@@ -23,15 +23,32 @@ class SoundboardApp {
     }
 
     setupEventListeners() {
-        // Sound button clicks
+        // Sound button clicks and touches
         const buttons = document.querySelectorAll('.sound-button');
         console.log(`Found ${buttons.length} sound buttons`);
         
         buttons.forEach((button, index) => {
             console.log(`Setting up button ${index + 1}:`, button.getAttribute('data-sound'));
-            button.addEventListener('click', (e) => this.playSound(e));
-            button.addEventListener('touchstart', (e) => this.handleButtonTouchStart(e));
-            button.addEventListener('touchend', (e) => this.handleButtonTouchEnd(e));
+            
+            // Use touchend for better mobile responsiveness
+            button.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.handleButtonTouchEnd(e);
+                this.playSound(e);
+            }, { passive: false });
+            
+            // Desktop fallback
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.playSound(e);
+            });
+            
+            button.addEventListener('touchstart', (e) => {
+                e.stopPropagation();
+                this.handleButtonTouchStart(e);
+            }, { passive: true });
         });
 
         // Navigation dots
@@ -62,13 +79,6 @@ class SoundboardApp {
             page.addEventListener('touchmove', (e) => this.handleSwipeMove(e), { passive: true });
             page.addEventListener('touchend', (e) => this.handleSwipeEnd(e), { passive: true });
         });
-
-        // Prevent default touch behaviors on buttons only
-        document.addEventListener('touchstart', (e) => {
-            if (e.target.classList.contains('sound-button')) {
-                e.preventDefault();
-            }
-        }, { passive: false });
     }
 
     initializeAudioElements() {
@@ -165,43 +175,27 @@ class SoundboardApp {
     }
 
     playSound(event) {
-        console.log('playSound called!', event);
-        event.preventDefault();
-        event.stopPropagation();
-        
         const button = event.currentTarget;
         const soundId = button.getAttribute('data-sound');
-        
-        console.log('Button clicked:', button);
-        console.log('Sound ID:', soundId);
         
         if (!soundId) {
             console.error('No sound ID found on button');
             return;
         }
 
-        // Try to get audio element from both Map and DOM
+        // Get audio element
         let audioElement = this.audioElements.get(soundId);
         if (!audioElement) {
             audioElement = document.getElementById(soundId);
             if (audioElement) {
                 this.audioElements.set(soundId, audioElement);
-                console.log('Audio element retrieved from DOM and stored');
             }
         }
         
-        console.log('Audio element retrieved:', audioElement);
-        
         if (!audioElement) {
             console.warn(`Audio element not found for sound: ${soundId}`);
-            console.log('Available audio elements:', Array.from(this.audioElements.keys()));
             return;
         }
-
-        // Debug information
-        console.log(`Attempting to play sound: ${soundId}`);
-        console.log(`Audio element src: ${audioElement.src}`);
-        console.log(`Audio element readyState: ${audioElement.readyState}`);
 
         // Stop any currently playing sound
         this.stopAllSounds();
@@ -209,18 +203,30 @@ class SoundboardApp {
         // Add visual feedback immediately
         button.classList.add('playing');
 
-        // Play the sound
+        // Play the sound immediately
         try {
+            // Reset to start
             audioElement.currentTime = 0;
+            
+            // Force load if needed
+            if (audioElement.readyState < 2) {
+                audioElement.load();
+            }
+            
+            // Play with promise handling
             const playPromise = audioElement.play();
             
             if (playPromise !== undefined) {
                 playPromise.then(() => {
-                    console.log(`Sound ${soundId} started playing successfully`);
+                    console.log(`Sound ${soundId} playing`);
                 }).catch(error => {
                     console.error(`Error playing sound ${soundId}:`, error);
-                    this.showError(`Unable to play sound ${soundId}`);
                     button.classList.remove('playing');
+                    
+                    // Retry once
+                    setTimeout(() => {
+                        audioElement.play().catch(e => console.error('Retry failed:', e));
+                    }, 100);
                 });
             }
         } catch (error) {
@@ -228,7 +234,7 @@ class SoundboardApp {
             button.classList.remove('playing');
         }
         
-        // Add haptic feedback if available
+        // Add haptic feedback
         this.hapticFeedback();
     }
 

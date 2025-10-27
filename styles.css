@@ -23,9 +23,9 @@ body {
     overflow: hidden;
 }
 
-/* Background Nebula */
+/* Background Nebula - Fixed position */
 .background-nebula {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -37,6 +37,7 @@ body {
         radial-gradient(ellipse at 60% 20%, rgba(255, 105, 180, 0.15) 0%, transparent 50%),
         linear-gradient(135deg, #0a0a0a 0%, #1a0b2e 25%, #16213e 50%, #0f3460 75%, #0a0a0a 100%);
     animation: nebulaFloat 20s ease-in-out infinite;
+    z-index: 1;
 }
 
 @keyframes nebulaFloat {
@@ -46,7 +47,7 @@ body {
     75% { transform: translate(-5px, 5px) scale(1.01); }
 }
 
-/* Page Management */
+/* Page Management - Smoother transitions with spacing */
 .page {
     position: absolute;
     top: 0;
@@ -54,8 +55,8 @@ body {
     width: 100%;
     height: 100%;
     opacity: 0;
-    transform: translateX(100%);
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(120%);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     display: flex;
     flex-direction: column;
     pointer-events: none;
@@ -68,7 +69,8 @@ body {
 }
 
 .page.prev {
-    transform: translateX(-100%);
+    transform: translateX(-120%);
+    opacity: 0;
 }
 
 /* Content */
@@ -122,13 +124,13 @@ body {
     padding: 10px 0;
 }
 
-/* Sound Buttons */
+/* Sound Buttons - Smaller sizing */
 .sound-button {
     border: none;
-    border-radius: 20px;
+    border-radius: 16px;
     background: var(--button-color, #4ecdc4);
     color: white;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
     position: relative;
@@ -141,8 +143,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
-    min-height: 80px;
+    padding: 8px;
+    min-height: 70px;
 }
 
 .sound-button::before {
@@ -191,15 +193,9 @@ body {
     word-break: break-word;
 }
 
-/* Navigation */
+/* Navigation - Hidden */
 .navigation {
-    position: relative;
-    z-index: 20;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
+    display: none;
 }
 
 .slider-container {
@@ -281,8 +277,8 @@ body {
     }
     
     .sound-button {
-        font-size: 0.95rem;
-        min-height: 80px;
+        font-size: 0.9rem;
+        min-height: 70px;
     }
 }
 
@@ -294,9 +290,9 @@ body {
     }
     
     .sound-button {
-        font-size: 0.9rem;
-        min-height: 75px;
-        border-radius: 16px;
+        font-size: 0.85rem;
+        min-height: 65px;
+        border-radius: 14px;
     }
     
     .app-title {
@@ -317,10 +313,10 @@ body {
     }
     
     .sound-button {
-        font-size: 0.85rem;
-        min-height: 70px;
-        border-radius: 14px;
-        padding: 8px;
+        font-size: 0.8rem;
+        min-height: 60px;
+        border-radius: 12px;
+        padding: 7px;
     }
     
     .app-title {
@@ -330,10 +326,6 @@ body {
     
     .page-indicator {
         font-size: 1rem;
-    }
-    
-    .navigation {
-        padding: 12px;
     }
 }
 
@@ -349,8 +341,8 @@ body {
     }
     
     .sound-button {
-        font-size: 0.8rem;
-        min-height: 65px;
+        font-size: 0.75rem;
+        min-height: 58px;
         border-radius: 12px;
         padding: 6px;
     }
@@ -358,20 +350,6 @@ body {
     .app-title {
         font-size: 1.5rem;
         margin-bottom: 0.5rem;
-    }
-    
-    .slider-track {
-        width: 160px;
-        height: 44px;
-    }
-    
-    .slider-thumb {
-        width: 75px;
-        height: 36px;
-    }
-    
-    .slider-track[data-page="2"] .slider-thumb {
-        left: calc(100% - 79px);
     }
 }
 
@@ -382,8 +360,8 @@ body {
     }
     
     .sound-button {
-        font-size: 0.75rem;
-        min-height: 60px;
+        font-size: 0.7rem;
+        min-height: 54px;
     }
     
     .app-title {
@@ -394,8 +372,8 @@ body {
 /* Very small screens */
 @media (max-width: 360px) {
     .sound-button {
-        font-size: 0.7rem;
-        min-height: 55px;
+        font-size: 0.65rem;
+        min-height: 50px;
         padding: 4px;
     }
 }
