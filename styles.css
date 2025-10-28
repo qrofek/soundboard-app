@@ -126,6 +126,7 @@ body {
     flex-direction: column;
     pointer-events: none;
     will-change: transform, opacity;
+    z-index: 10;
 }
 
 .page.active {
@@ -173,7 +174,7 @@ body {
 /* Content */
 .content {
     position: relative;
-    z-index: 10;
+    z-index: 20;
     padding: 80px 20px 20px;
     flex: 1;
     display: flex;
@@ -197,6 +198,8 @@ body {
     width: 100%;
     margin: 0 auto;
     padding: 10px 0;
+    position: relative;
+    z-index: 1;
 }
 
 /* Sound Buttons - 3D Box Effect */
