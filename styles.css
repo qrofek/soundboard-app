@@ -167,10 +167,7 @@ body {
 }
 
 .page-indicator {
-    display: inline-block;
-    font-size: 1.2rem;
-    opacity: 0.6;
-    margin-left: 0.5rem;
+    display: none;
 }
 
 /* Content */
@@ -437,10 +434,6 @@ body {
     
     .app-title {
         font-size: 1.6rem;
-    }
-    
-    .page-indicator {
-        font-size: 1rem;
     }
 }
 
