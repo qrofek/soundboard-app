@@ -131,6 +131,12 @@ class SoundboardApp {
         newPageElement.classList.remove('prev');
         newPageElement.classList.add('active');
         
+        // Update page indicator in header
+        const pageIndicator = document.getElementById('page-number');
+        if (pageIndicator) {
+            pageIndicator.textContent = pageNumber;
+        }
+        
         // Update dots
         document.querySelectorAll('.dot').forEach(dot => {
             const dotPage = parseInt(dot.getAttribute('data-page'));

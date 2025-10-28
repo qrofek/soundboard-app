@@ -12,12 +12,18 @@
     <meta name="apple-mobile-web-app-title" content="Space Soundboard">
 </head>
 <body>
+    <!-- Fixed Background -->
+    <div class="background-nebula"></div>
+    
+    <!-- Fixed Header -->
+    <header class="app-header">
+        <h1 class="app-title">Space Soundboard <span class="page-indicator" id="page-number">1</span></h1>
+    </header>
+    
     <div class="app-container">
         <!-- Soundboard Page 1 -->
         <div class="page active" id="soundboard-page-1">
-            <div class="background-nebula"></div>
             <div class="content">
-                <h1 class="app-title">Space Soundboard <span class="page-indicator">1</span></h1>
                 <div class="sound-grid">
                     <button class="sound-button" data-sound="sound1" style="--button-color: #ff6b6b;">
                         <span class="button-text">Aaaaaaaah</span>
@@ -83,9 +89,7 @@
 
         <!-- Soundboard Page 2 -->
         <div class="page" id="soundboard-page-2">
-            <div class="background-nebula"></div>
             <div class="content">
-                <h1 class="app-title">Space Soundboard <span class="page-indicator">2</span></h1>
                 <div class="sound-grid">
                     <button class="sound-button" data-sound="sound16" style="--button-color: #e17055;">
                         <span class="button-text">Daaahdaah</span>

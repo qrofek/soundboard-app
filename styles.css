@@ -139,15 +139,17 @@ body {
     opacity: 0;
 }
 
-/* Content */
-.content {
-    position: relative;
-    z-index: 10;
+/* Fixed Header */
+.app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
     padding: 20px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    background: rgba(10, 10, 10, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 /* App Title */
@@ -155,14 +157,13 @@ body {
     text-align: center;
     font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin: 0;
     background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
     background-size: 400% 400%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: gradientShift 3s ease-in-out infinite;
-    flex-shrink: 0;
 }
 
 .page-indicator {
@@ -170,6 +171,17 @@ body {
     font-size: 1.2rem;
     opacity: 0.6;
     margin-left: 0.5rem;
+}
+
+/* Content */
+.content {
+    position: relative;
+    z-index: 10;
+    padding: 80px 20px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 @keyframes gradientShift {
@@ -402,8 +414,12 @@ body {
 
 /* iPhone 16 Pro and similar (393px viewport width) */
 @media (max-width: 430px) {
+    .app-header {
+        padding: 15px;
+    }
+    
     .content {
-        padding: 12px 15px;
+        padding: 70px 15px 12px;
     }
     
     .sound-grid {
@@ -421,7 +437,6 @@ body {
     
     .app-title {
         font-size: 1.6rem;
-        margin-bottom: 0.6rem;
     }
     
     .page-indicator {
@@ -431,8 +446,12 @@ body {
 
 /* iPhone 16 Pro / 15 Pro / 14 Pro (393x852) - Optimized */
 @media (max-width: 393px) {
+    .app-header {
+        padding: 12px;
+    }
+    
     .content {
-        padding: 10px 12px;
+        padding: 65px 12px 10px;
     }
     
     .sound-grid {
@@ -449,7 +468,6 @@ body {
     
     .app-title {
         font-size: 1.5rem;
-        margin-bottom: 0.5rem;
     }
 }
 
